@@ -6,9 +6,11 @@ void Main_Menu(char);
 
 void Enemy_AI(int);
 
-void START(void);main.cpp
+void START(void);
 
 void QUIT(void);
+
+void Test(void);
 
 // Global Variables
 int My_point = 0;
