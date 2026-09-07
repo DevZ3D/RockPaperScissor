@@ -14,6 +14,21 @@ int My_point = 0;
 int Enemy_point = 0;
 
 
+// State Machien 
+/*
+the satate mahcine must keep track of players turns
+for exaple if player one is playing then the game will promptthe player to enter and confirm his choice
+then after player one is done then the game will prompt player two to inter his choice and to confirm it 
+
+the game will compare the players choices and will determine the winner of the round and will update the socre 
+
+the game will prompt the players if they wish to countenut or to quit the game 
+
+quittingthe game will display the final score and will determine the winner based on final score 
+
+
+*/
+
 
 //functions prototypes
 
@@ -159,7 +174,7 @@ char Player_two(void){
             break;
         }
     
-        else if(choice ==2){
+        else if(choice == 2){
             return 'P';
             break;
         }
