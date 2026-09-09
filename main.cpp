@@ -9,43 +9,25 @@ using u32 = uint_least32_t;
 using engine = std::mt19937;
 
 
-// Global Variables
-int My_point = 0;
-int Enemy_point = 0;
-
-
-// State Machien 
-/*
-the satate mahcine must keep track of players turns
-for exaple if player one is playing then the game will promptthe player to enter and confirm his choice
-then after player one is done then the game will prompt player two to inter his choice and to confirm it 
-
-the game will compare the players choices and will determine the winner of the round and will update the socre 
-
-the game will prompt the players if they wish to countenut or to quit the game 
-
-quittingthe game will display the final score and will determine the winner based on final score 
-
-
-*/
 
 
 //functions prototypes
 
-char Enemy_bot(u32);
-char Player_one(void);
-char Player_two(void);
+char enemy_bot(u32);
+char player_one(void);
+char player_two(void);
 
 void QUIT(void);
+
+void game_mode_selection();
+char process_player_input(int);
+bool game_repeat_process(void);
+void game_process(int mode);
 
 
 // main code
 int main (void){
      
-    // init 
-    std::random_device os_seed;
-    const u32 seed = os_seed();
-
     char user_choice;
 
     std::cout << "Welcome to my Rock Paper Scissor game! \n";
@@ -57,25 +39,7 @@ int main (void){
         
         if (user_choice == 'S' || user_choice == 's'){
 
-            char player_choice = Player_one();
-            char enemy_choice = Enemy_bot(seed);
-            //std::cout << " Enmey bot selected vakue: " << value << std::endl;
-
-            if (player_choice ==  enemy_choice ){
-                std:: cout << "Draw\n";
-            }
-            else if (player_choice == 'R' && enemy_choice == 'S'){
-                std::cout << "player wins \n";
-            }
-            else if (player_choice == 'P' && enemy_choice == 'R'){
-                std::cout << "player wins \n";
-            }
-            else if (player_choice == 'S' && enemy_choice == 'P'){
-                std::cout << "player wins \n";
-            }
-            else{
-                std::cout << "enemy wins \n";
-            }
+            game_mode_selection();
         }
     
         else if (user_choice == 'Q' || user_choice == 'q'){
@@ -95,8 +59,87 @@ int main (void){
 
 
 
+void game_mode_selection(){
+    
+    int user_choice; 
+    
 
-char Enemy_bot(u32 seed){
+    do  {
+        
+        std::cout <<" select 1 to play agisnt player two or select 2 to playe agisnt bot \n or select 3 to go back to menu!\n";
+        std::cin >> user_choice;
+
+        if(user_choice == 1){
+             game_process(1);
+        }
+
+        else if (user_choice == 2){  
+            game_process(2);
+        }
+           
+        else if (user_choice == 3){  
+            break;  
+        }
+
+        else { 
+            std::cout << "invalid input \n";  
+            std::cout << "pls try again!";
+        }
+
+        } while((user_choice != 1) || (user_choice != 2)|| (user_choice != 3));
+
+}
+
+
+
+char process_player_input(int player){
+
+  int  choice = 0;
+    
+    while(1){
+
+         std::cout << "Select your move player"<< player << "\n Enter: \n 1 for Rock \n 2 for paper \n 3 for Scissors \n:";
+         std::cin >> choice;
+       
+        if(choice == 1){
+            return 'R';
+            break;
+        }
+    
+        else if(choice == 2){
+            return 'P';
+            break;
+        }
+        
+        else if(choice == 3){
+            return 'S';
+            break;
+        }
+
+        else{
+            std::cout << "invalid input, Please try again" << player << "\n";
+        }
+    }
+    return choice;
+}
+
+
+
+char player_one(void){
+    char player_one_choice = process_player_input(1);
+    return player_one_choice;
+}
+
+
+char player_two(void){
+    char player_one_choice = process_player_input(2);
+    return player_one_choice;
+}
+
+
+
+
+char enemy_bot(u32 seed){
 
     int enemy_choice = 0;
 
@@ -125,70 +168,93 @@ char Enemy_bot(u32 seed){
 }
 
 
-char Player_one(void){
-    int  choice = 0;
-    
-    while(1){
 
-         std::cout << "Select your move\n Enter: \n 1 for Rock \n 2 for paper \n 3 for Scissors \n:";
-         std::cin >> choice;
-       
-        if(choice == 1){
-            return 'R';
-            break;
-        }
-    
-        else if(choice ==2){
-            return 'P';
-            break;
-        }
+bool game_repeat_process(void){
+    bool choice_repeat;
+
+   do {
+        std::cin >> choice_repeat;
         
-        else if(choice == 3){
-            return 'S';
+        if  (choice_repeat == true ){
             break;
         }
-
+        else if( choice_repeat == false ) {
+            break;
+        }
         else{
-            std::cout << "invalid input, Please try again \n";
+            std::cout <<"not valid! pls try agian!\n";
         }
-    }
+
+    } while((choice_repeat != true) || (choice_repeat != false));
+
+    return choice_repeat;
 }
 
-void QUIT(void){
-std::cout << "Quit \n";
 
-}
+void game_process(int mode){
 
+    bool game_repeat = true;
+      do{
+             // init 
+        std::random_device os_seed;
+        const u32 seed = os_seed();
 
-
-char Player_two(void){
-    int  choice = 0;
-    
-    while(1){
-
-         std::cout << "Select your move\n Enter: \n 1 for Rock \n 2 for paper \n 3 for Scissors \n:";
-         std::cin >> choice;
-       
-        if(choice == 1){
-            return 'R';
-            break;
-        }
-    
-        else if(choice == 2){
-            return 'P';
-            break;
-        }
+        char player_one_choice;
+        char player_two_choice;
         
-        else if(choice == 3){
-            return 'S';
-            break;
-        }
+        int player_one_points = 0;
+        int player_two_points = 0;
+        
 
-        else{
-            std::cout << "invalid input, Please try again \n";
-        }
-    }
+
+        do{ 
+            if (mode == 1){
+                player_one_choice = player_one();
+                player_two_choice = player_two();
+            }
+            else if (mode == 2){
+                player_one_choice = player_one();
+                player_two_choice = enemy_bot(seed);
+                //std::cout << " Enmey bot selected vakue: " << value << std::endl;
+                }
+            
+            if (player_one_choice == player_two_choice){
+                std::cout << "Draw\n";
+                std::cout << "no point";
+            }
+            else if (player_one_choice == 'R' && player_two_choice == 'S'){
+                std::cout <<"player one wins \n";
+                player_one_points++;
+            } 
+            else if (player_one_choice == 'P' && player_two_choice == 'R'){
+                std::cout <<"player one wins \n";
+                player_one_points++;
+            }
+            else if (player_one_choice == 'S' && player_two_choice == 'P'){
+                std::cout <<"player one wins \n";
+                player_one_points++;
+            }
+            else{
+                std::cout <<"player two wins \n";
+                player_two_points++;
+            }
+            } while((player_one_points <= 3) || (player_two_points <= 3));
+ 
+            if (player_one_points >= 3 ){
+                 std::cout << "player One wins! \n";
+                 game_repeat = game_repeat_process();
+
+            }
+            else{
+                 std::cout << "player Two wins! \n";
+                 game_repeat = game_repeat_process();
+            }
+
+         } while(game_repeat  != false);
 }
+
+
+
 
 void QUIT(void){
 std::cout << "Quit \n";
