@@ -21,7 +21,7 @@ void QUIT(void);
 
 void game_mode_selection();
 char process_player_input(int);
-bool game_repeat_process(void);
+//bool game_repeat_process(void);
 void game_process(int mode);
 
 
@@ -50,6 +50,7 @@ int main (void){
         else{
             std::cout << "invalid input\n";
             std::cout << "please try again\n";
+            std::cin.clear();
 
         }
     }while(user_choice != 'Q' || user_choice != 'q');
@@ -61,7 +62,7 @@ int main (void){
 
 void game_mode_selection(){
     
-    int user_choice; 
+    char user_choice; 
     
 
     do  {
@@ -69,22 +70,24 @@ void game_mode_selection(){
         std::cout <<" select 1 to play agisnt player two or select 2 to playe agisnt bot \n or select 3 to go back to menu!\n";
         std::cin >> user_choice;
 
-        if(user_choice == 1){
+        if(user_choice == 'r'){
              game_process(1);
         }
 
-        else if (user_choice == 2){  
+        else if (user_choice == 'p'){  
             game_process(2);
         }
            
-        else if (user_choice == 3){  
+        else if (user_choice == 's'){  
             break;  
         }
 
         else { 
             std::cout << "invalid input \n";  
             std::cout << "pls try again!";
+            std::cin.clear();
         }
+        std::cin.clear();
 
         } while((user_choice != 1) || (user_choice != 2)|| (user_choice != 3));
 
@@ -94,30 +97,31 @@ void game_mode_selection(){
 
 char process_player_input(int player){
 
-  int  choice = 0;
+  char  choice;
     
     while(1){
 
          std::cout << "Select your move player"<< player << "\n Enter: \n 1 for Rock \n 2 for paper \n 3 for Scissors \n:";
          std::cin >> choice;
        
-        if(choice == 1){
+        if(choice == 'R' || choice == 'r'){
             return 'R';
             break;
         }
     
-        else if(choice == 2){
+        else if(choice == 'P'|| choice == 'p'){
             return 'P';
             break;
         }
         
-        else if(choice == 3){
+        else if(choice == 'S' || choice == 's'){
             return 'S';
             break;
         }
 
         else{
             std::cout << "invalid input, Please try again" << player << "\n";
+            std::cin.clear();
         }
     }
     return choice;
@@ -138,12 +142,11 @@ char player_two(void){
 
 
 
-
 char enemy_bot(u32 seed){
 
     int enemy_choice = 0;
 
-    std::cout << "ENEMY testing \n";
+    //std::cout << "ENEMY testing \n";
     engine generator (seed);
     
     std::uniform_int_distribution<u32> distribute(1,3);    
@@ -169,7 +172,7 @@ char enemy_bot(u32 seed){
 
 
 
-bool game_repeat_process(void){
+/*bool game_repeat_process(void){
     bool choice_repeat;
 
    do {
@@ -183,18 +186,19 @@ bool game_repeat_process(void){
         }
         else{
             std::cout <<"not valid! pls try agian!\n";
+            std::cin.clear();
         }
 
     } while((choice_repeat != true) || (choice_repeat != false));
 
     return choice_repeat;
-}
+}*/
 
 
 void game_process(int mode){
 
     bool game_repeat = true;
-      do{
+      
              // init 
         std::random_device os_seed;
         const u32 seed = os_seed();
@@ -205,9 +209,7 @@ void game_process(int mode){
         int player_one_points = 0;
         int player_two_points = 0;
         
-
-
-        do{ 
+        do{
             if (mode == 1){
                 player_one_choice = player_one();
                 player_two_choice = player_two();
@@ -238,19 +240,15 @@ void game_process(int mode){
                 std::cout <<"player two wins \n";
                 player_two_points++;
             }
-            } while((player_one_points <= 3) || (player_two_points <= 3));
+            } while((player_one_points != 3) || (player_two_points != 3));
  
-            if (player_one_points >= 3 ){
-                 std::cout << "player One wins! \n";
-                 game_repeat = game_repeat_process();
-
+            if (player_one_points == 3 ){
+                 std::cout << "player One wins! \n";    
             }
             else{
-                 std::cout << "player Two wins! \n";
-                 game_repeat = game_repeat_process();
+                 std::cout << "player Two wins! \n";     
             }
 
-         } while(game_repeat  != false);
 }
 
 
